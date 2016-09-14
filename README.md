@@ -8,8 +8,15 @@
 
 ```
 npm install
-
 ```
 3. in /dist/index.html add a Filestack API key
+
+4. run the following command to run webpack-dev-server
+
+```
+webpack-dev-server
+```
+
+5. in the browser type localhost:8080
 
 Enjoy
