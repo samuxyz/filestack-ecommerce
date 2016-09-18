@@ -1,17 +1,28 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import * as actionCreators from '../action_creators';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
+import {addProduct} from '../action_creators';
 
 export class Add extends React.Component {
-	constructor() {
-		super();
-	}
+	constructor(props) {
+    super(props);
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+  }
 	uploadImg() {
 		filepicker.pick(
+			{
+		    mimetype: 'image/*',
+		    container: 'modal',
+		    services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'URL', 'IMGUR', 'PICASA'],
+		    openTo: 'COMPUTER'
+		  },
 		  function(Blob){
 		    console.log(JSON.stringify(Blob));
 		    const handler = Blob.url.substring(Blob.url.lastIndexOf('/') + 1);
 		    document.getElementById('button-upload').dataset.handler = handler;
+		  },
+		  function(FPError){
+		  	console.log(FPError.toString());
 		  }
 		);
 	}
@@ -21,9 +32,11 @@ export class Add extends React.Component {
 		const handler = document.getElementById('button-upload').dataset.handler;
 		const price = document.getElementById('price').value;
 		const description = document.getElementById('description').value;
-		const rating = Math.floor(Math.random() * 5) + 1;
-		const product = {id, name, handler, price, description, rating};
+		const rating = Math.floor(Math.random() * 5) + 1; //Just a random number
+		const category = document.getElementById('category-list').value;
+		const product = {id, name, handler, price, description, rating, category};
 		this.props.addProduct(product);
+		document.getElementById("product-form").reset();
 	}
 	render() {
 		return(
@@ -36,7 +49,7 @@ export class Add extends React.Component {
 								</h2>
 							</div>
 							<div className="panel-body">
-								<form name="imageForm" noValidate>
+								<form name="product-form" id="product-form" noValidate>
 									<div className="form-group">
 										<label htmlFor="name">Name</label>
 										<input id="name" type="text" className="form-control" placeholder="Enter the real name..." required/>
@@ -49,16 +62,21 @@ export class Add extends React.Component {
 										<label htmlFor="price">Price</label>
 										<input id="price" type="text" className="form-control" placeholder="Enter the price..." required/>
 									</div>
+									<div className="form-group">
+										<label htmlFor="category-list">Category</label>
+										<select className="form-control" id="category-list">
+											{this.props.categories.map(category => <option key={category.id} value={category.id}>{category.name}</option>)}
+										</select>
+									</div>
 									<div className="form-group ">
 					          <label htmlFor="picture">Picture</label>
 					          <div className="text-center dropup">
 					            <button id="button-upload" type="button" className="btn btn-default filepicker" onClick={() => this.uploadImg()}>
 					              Upload <span className="caret"></span>
-					            </button>
-					             
+					            </button>   
 					          </div>
 					        </div>
-									<button className="btn btn-filestack btn-block" onClick={() => this.submitCharacter(this.props.productListSize)}>Submit</button>
+									<button type="button" className="btn btn-filestack btn-block" onClick={() => this.submitCharacter(this.props.productListSize)}>Submit</button>
 								</form>
 							</div>
 					</div>
@@ -71,8 +89,13 @@ export class Add extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    productListSize: state.get("productList").toJS().length
+    productListSize: state.get("productList").toJS().length,
+    categories: state.get("categories").toJS()
   };
 }
-
-export const AddContainer = connect(mapStateToProps, actionCreators)(Add);
+function mapDispatchToProps(dispatch) {
+	return {
+		addProduct: product => dispatch(addProduct(product))
+	}
+}
+export const AddContainer = connect(mapStateToProps, mapDispatchToProps)(Add);

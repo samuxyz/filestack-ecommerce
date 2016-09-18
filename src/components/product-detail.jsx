@@ -1,12 +1,14 @@
 import React from 'react';
-import RatingContainer from './RatingContainer';
 import {Link} from 'react-router';
 import {connect} from 'react-redux';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
+import RatingContainer from './rating-container';
 
 export class ProductDetail extends React.Component {
-	constructor() {
-		super();
-	}
+	constructor(props) {
+    super(props);
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+  }
 	filterProduct() {
 		const id = parseInt(this.props.params.id);
 		return this.props.productList.filter((product, index) => product.id === id)[0];
@@ -31,10 +33,20 @@ export class ProductDetail extends React.Component {
               <h3><a href="#">{product.name}</a></h3>
               <p>{product.description}</p>   
             </div>
-            <div className="ratings">  
               <RatingContainer rating={product.rating}></RatingContainer>  
-            </div>
           </div>
+          <div className="text-center">
+            <button
+						    className="snipcart-add-item btn btn-primary btn-cart"
+						    data-item-id={product.id + product.handler}
+						    data-item-name={product.name}
+						    data-item-price={product.price}
+						    data-item-url="/"
+						    data-item-image={`https://cdn.filestackcontent.com/${product.handler}`}
+						    data-item-description={product.description}>
+						        Add to Cart
+						</button>
+					</div>
       	</div>
       	<div className="col-md-2"></div>
       </div>

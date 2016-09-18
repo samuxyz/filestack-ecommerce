@@ -14,7 +14,7 @@ npm install
 4. run the following command to run webpack-dev-server
 
 ```
-webpack-dev-server
+npm start
 ```
 
 5. in the browser type localhost:8080

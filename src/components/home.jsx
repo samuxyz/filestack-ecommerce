@@ -1,21 +1,28 @@
 import React from 'react';
-import ProductPreview from './ProductPreview';
 import {connect} from 'react-redux';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
+import {CategoryListContainer} from './category-list';
+import ProductPreview from './product-preview';
+
 
 export class Home extends React.Component {
-	constructor() {
-		super();
-	}
+	constructor(props) {
+      super(props);
+      this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+  }
 	render() {
+    let productList = this.props.productList;
+    if(this.props.filterProduct) {
+      productList = productList.filter(product => product.category == this.props.filterProduct);
+    }
 		return (
 			<div className="row">
         <div className="col-md-3">
-            <p className="lead">Shop Name</p>
-            <div className="list-group">
-                <a href="#" className="list-group-item">Category 1</a>
-                <a href="#" className="list-group-item">Category 2</a>
-                <a href="#" className="list-group-item">Category 3</a>
-            </div>
+            <blockquote className="blockquote">
+              <p className="m-b-0">“Happiness is a warm puppy.”</p>
+              <footer className="blockquote-footer">Charles M. Schulz</footer>
+            </blockquote>
+            <CategoryListContainer categories={this.props.categories}></CategoryListContainer>
         </div>
         <div className="col-md-9">
           <div className="row carousel-holder">
@@ -47,7 +54,7 @@ export class Home extends React.Component {
             </div>
           </div>
           <div className="row">   
-            {this.props.productList.map(product => <ProductPreview key={product.id} {...product} />)}
+            {productList.map(product => <ProductPreview key={product.id} {...product} />)}
           </div>
         </div>
       </div>
@@ -57,7 +64,9 @@ export class Home extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    productList: state.get("productList").toJS()
+    productList: state.get('productList').toJS(),
+    categories: state.get('categories').toJS(),
+    filterProduct: state.get('filterProduct')
   };
 }
 

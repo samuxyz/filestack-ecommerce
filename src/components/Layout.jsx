@@ -1,10 +1,12 @@
 import React from 'react';
 import {Link} from 'react-router';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 export default class Layout extends React.Component {
-	constructor() {
-		super();
-	}
+	constructor(props) {
+    super(props);
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+  }
 	render() {
 		const currentLocation = this.props.location.pathname;
 		return(
@@ -23,9 +25,10 @@ export default class Layout extends React.Component {
 						<div id="navbar" className="navbar-collapse collapse">
 							<ul className='nav navbar-nav navbar-left'>
 							{this.props.location.pathname != '/add' ? <li><Link to="/add">Upload</Link></li> : ""}
+							{this.props.location.pathname != '/' ? <li><Link to="/">Home</Link></li> : ""}
 							</ul> 
 							<ul className='nav navbar-nav navbar-right'>
-							{this.props.location.pathname != '/' ? <li><Link to="/">Home</Link></li> : ""}
+								<li><a href="#" className="snipcart-summary snipcart-checkout" id="btn-checkout"><span className="glyphicon glyphicon-shopping-cart"></span> <span className="snipcart-total-items"></span> Checkout</a></li>
 							</ul>  
 						</div>
 						<div id="navbar" className="navbar-collapse collapse">
@@ -33,12 +36,10 @@ export default class Layout extends React.Component {
 					</div>
 				</nav>
 				<div className="container">
-					
-    				{this.props.children}
-  			
+    			{this.props.children}
 				<hr></hr>
     		<footer>
-      	<p>© 2016 Samuele Zaza, Filestack Tech Evangelist.</p>
+      	<p>© 2016 <a href="https://tw.linkedin.com/in/samuele-zaza-46523681" target="_blank">Samuele Zaza</a>, Filestack Tech Evangelist.</p>
     		</footer>
 			</div>
 		</div>

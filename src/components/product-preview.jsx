@@ -1,12 +1,14 @@
 import React from 'react';
 import {Link} from 'react-router';
-import RatingContainer from './RatingContainer';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
+import RatingContainer from './rating-container';
 
 
 export default class ProductPreview extends React.Component {
-	constructor() {
-		super();
-	}
+	constructor(props) {
+    super(props);
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+  }
 	render() {
 		return (
 			<div className="col-sm-4 col-lg-4 col-md-4">

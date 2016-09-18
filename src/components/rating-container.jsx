@@ -1,9 +1,12 @@
 import React from 'react';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
 import Rating from './Rating';
+
 export default class RatingContainer extends React.Component {
-	constructor() {
-		super();
-	}
+	constructor(props) {
+    super(props);
+    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+  }
 	getRating(rating) {
 		let starList = [];
 		for (let i = 0; i < rating; i++) {

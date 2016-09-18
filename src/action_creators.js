@@ -10,3 +10,9 @@ export function addProduct(product) {
 		product
 	};
 }
+export function filterProduct(filter) {
+	return {
+		type: 'FILTER_PRODUCT',
+		filter
+	};
+}

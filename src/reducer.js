@@ -1,4 +1,4 @@
-import {setState, addProduct, INITIAL_STATE} from './core';
+import {setState, addProduct, filterProduct, INITIAL_STATE} from './core';
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -6,6 +6,8 @@ export default function(state = INITIAL_STATE, action) {
 	    return setState(state, action.state);
 	  case 'ADD_PRODUCT':
 	  	return addProduct(state, action.product);
+	  case 'FILTER_PRODUCT':
+	  	return filterProduct(state, action.filter);
   }
   return state;
 }
