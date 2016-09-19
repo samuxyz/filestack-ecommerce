@@ -24,8 +24,7 @@ export default class RatingContainer extends React.Component {
         <p>
         	{this.getRating(this.props.rating)}
         </p>
-      </div>
+      </div> 
 		);
 	}
-
 }

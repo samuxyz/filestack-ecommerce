@@ -7,7 +7,7 @@
     "start": "webpack-dev-server"
   },
   "keywords": [],
-  "author": "",
+  "author": "Samuele Zaza",
   "license": "ISC",
   "dependencies": {
     "bootstrap": "3.3.7",
